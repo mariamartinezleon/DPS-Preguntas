@@ -1,0 +1,105 @@
+import React, { useState } from "react";
+import { StyleSheet, Text, View, TextInput, Button } from "react-native";
+
+const QuadraticEquationSolver = () => {
+  const [a, setA] = useState("");
+  const [b, setB] = useState("");
+  const [c, setC] = useState("");
+  const [x1, setX1] = useState("");
+  const [x2, setX2] = useState("");
+
+  const solveEquation = () => {
+    const aFloat = parseFloat(a);
+    const bFloat = parseFloat(b);
+    const cFloat = parseFloat(c);
+    const discriminant = bFloat ** 2 - 4 * aFloat * cFloat;
+
+    if (aFloat === 0) {
+      alert("El valor de A no puede ser cero");
+      return;
+    }
+
+    if (isNaN(aFloat) || isNaN(bFloat) || isNaN(cFloat)) {
+      alert("Por favor, ingrese valores numéricos");
+      return;
+    }
+
+    if (discriminant < 0) {
+      alert("La ecuación no tiene solución en los números reales");
+      return;
+    }
+
+    const sqrtDiscriminant = Math.sqrt(discriminant);
+    const denominator = 2 * aFloat;
+
+    setX1((-bFloat + sqrtDiscriminant) / denominator);
+    setX2((-bFloat - sqrtDiscriminant) / denominator);
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Calculadora de ecuación cuadrática</Text>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Ingrese A"
+          keyboardType="numeric"
+          value={a}
+          onChangeText={(text) => setA(text)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Ingrese B"
+          keyboardType="numeric"
+          value={b}
+          onChangeText={(text) => setB(text)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Ingrese C"
+          keyboardType="numeric"
+          value={c}
+          onChangeText={(text) => setC(text)}
+        />
+      </View>
+      <Button title="Calcular" onPress={solveEquation} />
+      {x1 !== "" && (
+        <Text style={styles.result}>
+          x1 = {x1.toFixed(2)}, x2 = {x2.toFixed(2)}
+        </Text>
+      )}
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 20,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 20,
+  },
+  input: {
+    width: "30%",
+    height: 40,
+    borderWidth: 1,
+    padding: 10,
+  },
+  result: {
+    marginTop: 20,
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+});
+
+export default QuadraticEquationSolver;
